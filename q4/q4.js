@@ -17,8 +17,46 @@ Array.from(elements).forEach(function(element) {
        
         eventoClicarBotaoCalculadora(valueSend);
   });
+   
 })
 
+window.addEventListener("keydown", event => {
+    console.log(event.keyCode)
+        switch (event.keyCode) {
+            case 97:
+                amortecedor += "1";
+                
+                break;
+            case 98: 
+                amortecedor += "2";
+                break;
+            case 99: 
+                amortecedor += "3";
+                break;
+            case 100: 
+                amortecedor += "4";
+                break;
+            case 101: 
+                amortecedor += "5";
+                break;
+            case 102: 
+                amortecedor += "6";
+                break;
+            case 103: 
+                amortecedor += "7";
+                break;
+            case 104: 
+                amortecedor += "8";
+                break;
+            default:
+                break;
+        }
+        console.log(amortecedor)
+        recalcularValorDoMonitor();
+      return;
+    
+    // do something
+  });
 
 
 function recalcularValorDoMonitor(){
