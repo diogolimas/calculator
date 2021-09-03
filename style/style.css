@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;1,300&display=swap');
+
+
+main{
+    border-radius: 20px;
+
+}
+*::selection{
+    background-color: rgb(48,43,59);
+    color: white;
+}
+
 
 .grid {
 	display: grid;
@@ -10,24 +22,24 @@
 
 
 .item {
+    font-family: 'Roboto', sans-serif;
     position: relative;
 	margin: 5px;
-	background: #83ff31;
+	/*background: #83ff31;*/
 	text-align: center;
 	font-size: 2rem;
-    border: 1px solid black;
     cursor: pointer;
-}
-
-.item:not(:first-child):hover{
-    background: #53743d;
+    border-radius: 10px;
 }
 
 .grid {
-    background: grey;
+    /*background: grey;*/
 	max-width: 400px;
 	margin: 0 auto;
-	border: 10px  solid grey;
+    padding: 10px;
+	/*border: 10px  solid grey;*/
+    background: rgb(48,43,59);
+    background: linear-gradient(180deg, rgba(48,43,59,1) 0%, rgba(47,42,58,1) 47%, rgba(45,43,55,1) 100%);
 }
 
 h1 {
@@ -38,7 +50,7 @@ h1 {
 
 body {
 	font-family: monospace;
-	color: #333;
+	
 	padding-bottom: 60px;
 	margin: 0px;
 }
@@ -54,6 +66,29 @@ body > div:nth-of-type(even) {
 
 .b-white{
     background: white;
+}
+
+.b-grey{
+    background: #bfbfc1;
+}
+.b-grey:hover{
+    background: rgb(48,43,59);
+    color: white;
+}
+
+.b-deafult{
+    background: transparent;
+    color: white;
+}
+
+.b-deafult::selection{
+    background-color: rgb(48,43,59);
+    color: white;
+}
+
+.b-deafult:hover{
+    background: #bfbfc1;
+    color: black;
 }
 
 .span-2{
@@ -88,4 +123,8 @@ body > div:nth-of-type(even) {
     position: absolute;
     top: -21%;
     right: 38%;
+}
+
+.calculator-visor{
+    padding-top: 14px;
 }

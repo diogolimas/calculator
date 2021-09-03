@@ -1,26 +1,31 @@
 let amortecedor = "0"; 
-
+/***
+ * Setup geral
+ */
 let valorAtual = 0; 
 
 resultTotal = 0;
 
 let opBefore = null;
 
-
 const monitorCalculator = document.querySelector(".calculator-visor");
 
 var elements = document.getElementsByClassName("calc-btn");
 
+
+//setup dos eventos de click
 Array.from(elements).forEach(function(element) {
     element.addEventListener('click', function(event){
         
         let valueSend =  event.target.innerHTML.indexOf('</p>') != -1 ? event.target.querySelector('p').innerHTML.trim() : event.target.innerHTML.trim();
-       
-        eventoClicarBotaoCalculadora(valueSend);
+        if(valueSend == ",") valueSend = ".";
+        handleEventCalculator(valueSend);
   });
    
 })
 
+
+//setup de quando as teclas são clicadas
 window.addEventListener("keydown", event => {
     console.log(event.keyCode)
         let valueBtnKeyDown = null;
@@ -52,6 +57,9 @@ window.addEventListener("keydown", event => {
             case 105: 
                 valueBtnKeyDown = "9";
                 break;
+            case 106: 
+                valueBtnKeyDown = "*";
+                break;
             case 107: 
                 valueBtnKeyDown = "+";
                 break;
@@ -73,102 +81,74 @@ window.addEventListener("keydown", event => {
             default:
                 break;
         }
-        if(valueBtnKeyDown != null) eventoClicarBotaoCalculadora(valueBtnKeyDown)
+        if(valueBtnKeyDown != null) handleEventCalculator(valueBtnKeyDown)
         
         valueBtnKeyDown = null;
         
     
       return;
-  });
+});
 
-function eventoClicarBotaoCalculadora(value){
+
+//envios da calculadora e encaminhamentos
+function handleEventCalculator(value){
     
-    if(isNaN(parseInt(value))){
-        enviarSimbolo(value);
+    if(isNaN(parseInt(value)) && value != "."){
+
+        handleSymbol(value);
+
     }else{
         
-        enviarNumero(value);
+        handleNumber(value);
     }
-    recalcularValorDoMonitor();
 
-    console.log("amortecedor = "+amortecedor)
-    console.log("valor atual = " + valorAtual)
-
+    rereenderMonitor();
 }
 
 
-
-function recalcularValorDoMonitor(){
+//renderizar novamente o monitor da calculadora
+function rereenderMonitor(){
+    amortecedor = amortecedor.toString().replaceAll(".", ",")
     monitorCalculator.innerHTML = amortecedor;
 }
 
 
-function enviarSimbolo(value){
-
+function handleSymbol(value){
+    amortecedor = amortecedor.toString().replaceAll(",", ".")
     switch (value){
+        //apagar tudo
         case "AC":
             amortecedor = "0";
             valorAtual = 0;
             opBefore = null;
             break;
+        //apagar uma única coisa
+        case "←":
+                amortecedor = amortecedor.toString().trim().substring(0, amortecedor.length - 1);
+                valorAtual = amortecedor;
+                break;
         case "=":
             if(opBefore === null){ 
                 return;
             }
-            valorAtual = addbits(amortecedor)
+            valorAtual = eval(amortecedor)
             amortecedor = valorAtual;
             opBefore =  null;
             break;
         default:
-            calcularFinal(value)
+            makeSymbol(value)
             break;
     }
 }
 
 
-function calcularFinal(value){
-    
-    const internalBuffer = parseFloat(amortecedor);
-    
-    /*
-    console.log("internal buffer  = " + internalBuffer)
-    if (valorAtual === 0){
-            valorAtual = parseFloat(value);
-    }else{
-            realizarOperacao(internalBuffer);
-    }
-    */
+function makeSymbol(value){
         
     opBefore = value;
-
     amortecedor += value;
 }
 
-function realizarOperacao(internalBuffer){
-  // console.log(opBefore)
-   // console.log(internalBuffer)
-    if(opBefore === "+"){
-        /*
-        valorAtual = parseFloat(valorAtual)
-        internalBuffer = parseFloat(internalBuffer)
-        valorAtual = internalBuffer + valorAtual;
-        */
-       // amortecedor = valorAtual;
-    }else if(opBefore === "-"){
-        //valorAtual -= internalBuffer;
-        valorAtual = parseFloat(valorAtual)
-        internalBuffer = parseFloat(internalBuffer)
-        valorAtual = valorAtual -  internalBuffer ;
-
-    }else if(opBefore === "*"){
-        valorAtual *= internalBuffer;
-    }else if(opBefore === "/"){
-        valorAtual /= internalBuffer;
-    }
-   // amortecedor = valorAtual;
-}
-
-function enviarNumero(value){
+function handleNumber(value){
     
     if(amortecedor === "0"){
         valorAtual = value;
@@ -177,18 +157,6 @@ function enviarNumero(value){
        // valorAtual += value;
         amortecedor += value;   
         if(opBefore == null) valorAtual = parseFloat(amortecedor)
-        //realizarOperacao(parseFloat(value))
     }
     
 }
-
-
-function addbits(s) {
-    var total = 0,
-        s = s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
-        
-    while (s.length) {
-      total += parseFloat(s.shift());
-    }
-    return total;
-  }
